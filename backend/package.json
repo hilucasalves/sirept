@@ -1,0 +1,12 @@
+{
+  "name": "backend-sirept",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "json-server": "^0.17.1"
+  },
+  "scripts": {
+    "server": "json-server --watch data.json --port 3001"
+  }
+}

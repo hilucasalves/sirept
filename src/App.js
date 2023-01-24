@@ -1,23 +1,21 @@
+import FuncionarioPage from './components/FuncionarioPage.js';
 import logo from './logo.svg';
-import './App.css';
+//import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div>
+      <header>
+        <div className="bg-gray-100 mx-auto p-4">
+          <h1 className="text-center font-semibold text-xl">Sirept</h1>
+        </div>
       </header>
+
+      <main>
+        <div className="container mx-auto p-4">
+          <FuncionarioPage />
+        </div>
+      </main>
     </div>
   );
 }
