@@ -1,30 +1,4 @@
 {
-  "funcionarios": [
-    {
-      "matricula": "12345",
-      "nome": "Lucas",
-      "cargo": "Desenvolvedor Web",
-      "id": 1
-    },
-    {
-      "matricula": "12345",
-      "nome": "Lucas",
-      "cargo": "Desenvolvedor Web",
-      "id": 2
-    },
-    {
-      "matricula": "12345",
-      "nome": "Lucas",
-      "cargo": "Desenvolvedor Web",
-      "id": 3
-    }
-  ],
-  "eventos": [
-    {
-      "nome": "Feriado",
-      "data_inicio": "2022-01-01",
-      "data_fim": "2022-01-01",
-      "id": 1
-    }
-  ]
+  "funcionarios": [],
+  "eventos": []
 }

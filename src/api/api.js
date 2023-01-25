@@ -17,6 +17,11 @@ async function apiGetListEventoData() {
   return data;
 }
 
+async function apiPostEventoData(post) {
+  const { data } = await axios.post(`/eventos`, post, handleResponse);
+  return data;
+}
+
 function handleResponse(response) {
   if (response.ok) {
     return response.json();
@@ -29,4 +34,5 @@ export {
   apiGetListFuncionarioData,
   apiPostFuncionarioData,
   apiGetListEventoData,
+  apiPostEventoData,
 };

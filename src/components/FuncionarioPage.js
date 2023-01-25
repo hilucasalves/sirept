@@ -48,7 +48,7 @@ function FuncionarioPage() {
             </tr>
           </thead>
           <tbody>
-            {funcionarioData.map((funcionario, index) => {
+            {funcionarioData.map(funcionario => {
               const { id, nome, matricula, cargo } = funcionario;
               return (
                 <tr key={id} className="odd:bg-slate-100 even:bg-slate-50">
@@ -81,7 +81,7 @@ function FuncionarioAdd() {
     setLoading(true);
     const resp = await apiPostFuncionarioData(formData);
     if (resp.id) {
-      navigate('/funcionario');
+      navigate('/evento');
     }
   };
 
@@ -95,71 +95,74 @@ function FuncionarioAdd() {
 
   return (
     <>
-      <p className="mt-5 text-center">Adicionar Funcionário</p>
+      <h3 className="my-5 text-center">Adicionar Funcionário</h3>
       <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="matricula"
+        <div className="grid gap-6 md:grid-cols-1 mx-auto md:w-1/4">
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="matricula"
+            >
+              Matrícula
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              id="matricula"
+              name="matricula"
+              placeholder="Matrícula"
+              required
+              value={formData.matricula}
+              onChange={e =>
+                setFormData({ ...formData, matricula: e.target.value })
+              }
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="nome"
+            >
+              Nome
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              id="nome"
+              name="nome"
+              placeholder="Nome"
+              required
+              value={formData.nome}
+              onChange={e => setFormData({ ...formData, nome: e.target.value })}
+            />
+          </div>
+          <div className="mb-4">
+            <label
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="cargo"
+            >
+              Cargo
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              type="text"
+              id="cargo"
+              name="cargo"
+              placeholder="Cargo"
+              required
+              value={formData.cargo}
+              onChange={e =>
+                setFormData({ ...formData, cargo: e.target.value })
+              }
+            />
+          </div>
+          <button
+            className="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="submit"
           >
-            Matrícula
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            id="matricula"
-            name="matricula"
-            placeholder="Matrícula"
-            required
-            value={formData.matricula}
-            onChange={e =>
-              setFormData({ ...formData, matricula: e.target.value })
-            }
-          />
+            Enviar
+          </button>
         </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="nome"
-          >
-            Nome
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            id="nome"
-            name="nome"
-            placeholder="Nome"
-            required
-            value={formData.nome}
-            onChange={e => setFormData({ ...formData, nome: e.target.value })}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 text-sm font-bold mb-2"
-            htmlFor="cargo"
-          >
-            Cargo
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            type="text"
-            id="cargo"
-            name="cargo"
-            placeholder="Cargo"
-            required
-            value={formData.cargo}
-            onChange={e => setFormData({ ...formData, cargo: e.target.value })}
-          />
-        </div>
-
-        <button
-          className="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit"
-        >
-          Enviar
-        </button>
       </form>
     </>
   );

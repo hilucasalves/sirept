@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+//import logo from './logo.svg';
 //import './App.css';
 
 import Menu from './components/Menu.js';
@@ -21,6 +21,7 @@ function App() {
       <main>
         <div className="container mx-auto p-4">
           <Menu />
+          
         </div>
       </main>
     </div>
