@@ -9,6 +9,7 @@ import {
 import Home from './HomePage.js';
 import { FuncionarioPage, FuncionarioAdd } from './FuncionarioPage.js';
 import { EventoPage, EventoAdd } from './EventoPage.js';
+import { PontoPage, PontoAdd } from './PontoPage.js';
 
 export default function Menu() {
   return (
@@ -26,6 +27,9 @@ export default function Menu() {
               <li className="mx-2 cursor-pointer text-blue-500 hover:text-blue-800">
                 <NavLink to="/evento">Evento</NavLink>
               </li>
+              <li className="mx-2 cursor-pointer text-blue-500 hover:text-blue-800">
+                <NavLink to="/ponto">Ponto</NavLink>
+              </li>
             </ul>
             <Routes>
               <Route
@@ -41,6 +45,9 @@ export default function Menu() {
               {/* Evento */}
               <Route path={`/evento`} element={<EventoPage />} />
               <Route path={`/evento/add`} element={<EventoAdd />} />
+              {/* Ponto */}
+              <Route path={`/ponto`} element={<PontoPage />} />
+              <Route path={`/ponto/add`} element={<PontoAdd />} />
             </Routes>
           </div>
         </main>
