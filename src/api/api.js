@@ -32,6 +32,14 @@ async function apiGetListPontoData() {
   return data;
 }
 
+async function apiGetPontoDiaData(get) {
+  const { data } = await axios.get(
+    `/ponto?matricula=${get.matricula}&data=${get.data}`,
+    handleResponse
+  );
+  return data;
+}
+
 function handleResponse(response) {
   if (response.ok) {
     return response.json();
@@ -47,4 +55,5 @@ export {
   apiPostEventoData,
   apiGetListPontoData,
   apiPostPontoData,
+  apiGetPontoDiaData,
 };

@@ -2,7 +2,11 @@ import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import moment from 'moment';
 
-import { apiGetListPontoData, apiPostPontoData } from '../api/api.js';
+import {
+  apiGetListPontoData,
+  apiPostPontoData,
+  apiGetPontoDiaData,
+} from '../api/api.js';
 
 function ClockNow() {
   const [data, setData] = useState(new Date());
@@ -49,24 +53,17 @@ function PontoList() {
     getEventoData();
   }, []);
 
-  return (
-    <>
-      <p>a</p>
-    </>
-  );
+  return <></>;
 }
 
 function PontoAdd() {
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    matricula: null,
+    data: null,
+    ponto: [],
+  });
   const [ponto, setPonto] = useState([]);
-
-  const [matricula, setMatricula] = useState(null);
-  const [data, setData] = useState(null);
-
-  const [formData, setFormData] = useState(
-    { matricula: null, data: null, horas: [] },
-    [ponto]
-  );
 
   const statusPonto = [
     'Entrada 1',
@@ -85,23 +82,41 @@ function PontoAdd() {
     if (now.isValid()) {
       setPonto([...ponto, now.format('YYYY-MM-DD HH:mm')]);
 
-      //setFormData();
-
-      //const resp = await apiPostPontoData(formData);
-      //if (resp) {
-      setLoading(true);
-      setTimeout(() => {
-        setLoading(false);
-      }, '500');
-      setTxtPonto(statusPonto[ponto.length + 1]);
-      //}
+      /*if (resp) {
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+        }, '500');
+        setTxtPonto(statusPonto[ponto.length + 1]);
+      }*/
     }
   }
 
   useEffect(() => {
-    setMatricula(12345);
-    setData(moment().format('YYYY-MM-DD'));
-  }, [matricula, data]);
+    let fetchData = async () => {
+      let dados = {
+        matricula: 12345,
+        data: '2023-01-27',
+      };
+
+      let pontoDia = await apiGetPontoDiaData(dados);
+
+      if (pontoDia) {
+        pontoDia.forEach(p => {
+          dados.ponto = p.hora;
+          setFormData(dados);
+          setPonto(p.hora);
+        });
+      } else {
+        let resp = await apiPostPontoData(dados);
+      }
+
+      //setTxtPonto(statusPonto[ponto.length + 1]);
+
+      console.log(pontoDia);
+    };
+    fetchData();
+  }, []);
 
   if (loading) {
     return (
@@ -132,7 +147,7 @@ function PontoAdd() {
       {ponto.map((p, i) => {
         return (
           <p className="mt-3 text-justify" key={i}>
-            {statusPonto[i]}: {moment(p).format('DD/MM/YYYY HH:mm')}
+            {statusPonto[i]}: {moment(p).format('HH:mm')}
           </p>
         );
       })}

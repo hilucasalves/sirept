@@ -1,18 +1,5 @@
 {
   "funcionarios": [],
   "eventos": [],
-  "ponto": [
-    {
-      "matricula": null,
-      "data": null,
-      "horas": [],
-      "id": 1
-    },
-    {
-      "id": 2
-    },
-    {
-      "id": 3
-    }
-  ]
+  "ponto": []
 }
