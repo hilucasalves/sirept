@@ -40,6 +40,11 @@ async function apiGetPontoDiaData(get) {
   return data;
 }
 
+async function apiPutPontoDiaData(id, put) {
+  const { data } = await axios.put(`/ponto/${id}`, put, handleResponse);
+  return data;
+}
+
 function handleResponse(response) {
   if (response.ok) {
     return response.json();
@@ -56,4 +61,5 @@ export {
   apiGetListPontoData,
   apiPostPontoData,
   apiGetPontoDiaData,
+  apiPutPontoDiaData,
 };
