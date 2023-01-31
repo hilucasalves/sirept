@@ -1,5 +1,12 @@
 {
-  "funcionarios": [],
-  "eventos": [],
-  "ponto": []
+  "funcionario": [],
+  "evento": [],
+  "ponto": [
+    {
+      "id": 1,
+      "matricula": 12345,
+      "data": "2023-01-31",
+      "ponto": []
+    }
+  ]
 }

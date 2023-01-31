@@ -1,41 +1,41 @@
 import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import { apiGetListEventoData, apiPostEventoData } from '../api/api.js';
+import { apiListEvento, apiPostEvento } from '../api/api.js';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
-function EventoPage() {
-  const [eventoData, setEventoData] = useState([]);
+function EventoIndex() {
+  const [evento, setEvento] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getEventoData = async () => {
-      const data = await apiGetListEventoData();
-      setEventoData(data);
+  const fetchEvento = async () => {
+    await apiListEvento().then(data => {
+      setEvento(data);
       setLoading(false);
-    };
-    getEventoData();
-  }, []);
+    });
+  };
 
-  if (loading) {
-    return (
-      <div className="mt-8 text-center">
-        <ClipLoader />
-      </div>
-    );
-  }
+  useEffect(() => {
+    fetchEvento();
+  }, [evento]);
 
   return (
     <>
-      <div className="text-center my-6">
+      <div className="text-center my-8">
         <a
-          className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className=" bg-blue-500 hover:bg-blue-700 text-white font-bold p-4 rounded focus:outline-none focus:shadow-outline"
           href="/evento/add"
         >
           Adicionar Evento
         </a>
+
+        {loading && (
+          <div className="mt-8 text-center">
+            <ClipLoader />
+          </div>
+        )}
       </div>
-      {eventoData.length > 0 && (
+      {evento.length > 0 && (
         <table className="mx-auto border-collapse border border-slate-500">
           <thead>
             <tr>
@@ -45,17 +45,15 @@ function EventoPage() {
             </tr>
           </thead>
           <tbody>
-            {eventoData.map(evento => {
+            {evento.map(evento => {
               const { id, nome, data_inicio, data_fim } = evento;
+              const inicio = moment(data_inicio).format('DD/MM/YYYY');
+              const fim = moment(data_fim).format('DD/MM/YYYY');
               return (
                 <tr key={id} className="odd:bg-slate-100 even:bg-slate-50">
                   <td className="border border-slate-200 p-4">{nome}</td>
-                  <td className="border border-slate-200 p-4">
-                    {moment(data_inicio).format('DD/MM/YYYY')}
-                  </td>
-                  <td className="border border-slate-200 p-4">
-                    {moment(data_fim).format('DD/MM/YYYY')}
-                  </td>
+                  <td className="border border-slate-200 p-4">{inicio}</td>
+                  <td className="border border-slate-200 p-4">{fim}</td>
                 </tr>
               );
             })}
@@ -69,8 +67,6 @@ function EventoPage() {
 function EventoAdd() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
-
   const [formData, setFormData] = useState({
     nome: '',
     data_inicio: '',
@@ -79,25 +75,18 @@ function EventoAdd() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setLoading(true);
-    const resp = await apiPostEventoData(formData);
-    if (resp.id) {
-      navigate('/evento');
-    }
+    await apiPostEvento(formData).then(resp => {
+      if (resp.id) navigate('/evento');
+    });
   };
 
-  if (loading) {
-    return (
-      <div className="mt-8 text-center">
-        <ClipLoader />
-      </div>
-    );
+  function strToDate(strDate) {
+    return moment(strDate).format('YYYY-MM-DD');
   }
 
   return (
     <>
-      <h3 className="my-5 text-center">Adicionar Evento</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="mt-8">
         <div className="grid gap-6 md:grid-cols-1 mx-auto md:w-1/4">
           <div className="mb-4">
             <label
@@ -131,9 +120,12 @@ function EventoAdd() {
               name="data_inicio"
               placeholder="Data Início"
               required
-              value={moment(formData.data_inicio).format('YYYY-MM-DD')}
+              value={strToDate(formData.data_inicio)}
               onChange={e =>
-                setFormData({ ...formData, data_inicio: e.target.value })
+                setFormData({
+                  ...formData,
+                  data_inicio: e.target.value,
+                })
               }
             />
           </div>
@@ -151,9 +143,12 @@ function EventoAdd() {
               name="data_fim"
               placeholder="Data Fim"
               required
-              value={moment(formData.data_fim).format('YYYY-MM-DD')}
+              value={strToDate(formData.data_fim)}
               onChange={e =>
-                setFormData({ ...formData, data_fim: e.target.value })
+                setFormData({
+                  ...formData,
+                  data_fim: e.target.value,
+                })
               }
             />
           </div>
@@ -169,4 +164,4 @@ function EventoAdd() {
   );
 }
 
-export { EventoPage, EventoAdd };
+export { EventoIndex, EventoAdd };

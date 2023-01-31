@@ -1,44 +1,42 @@
 import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
-import {
-  apiGetListFuncionarioData,
-  apiPostFuncionarioData,
-} from '../api/api.js';
+import { apiListFuncionario, apiPostFuncionario } from '../api/api.js';
 
 import { useNavigate } from 'react-router-dom';
 
-function FuncionarioPage() {
-  const [funcionarioData, setFuncionarioData] = useState([]);
+function FuncionarioIndex() {
+  const [funcionario, setFuncionario] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const getFuncionarioData = async () => {
-      const data = await apiGetListFuncionarioData();
-      setFuncionarioData(data);
+  const fetchFuncionario = async () => {
+    await apiListFuncionario().then(data => {
+      setFuncionario(data);
       setLoading(false);
-    };
-    getFuncionarioData();
-  }, []);
+    });
+  };
 
-  if (loading) {
-    return (
-      <div className="mt-8 text-center">
-        <ClipLoader />
-      </div>
-    );
-  }
+  useEffect(() => {
+    fetchFuncionario();
+  }, [funcionario]);
 
   return (
     <>
-      <div className="text-center my-6">
+      <div className="text-center my-8">
         <a
-          className=" bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          className=" bg-blue-500 hover:bg-blue-700 text-white font-bold p-4 rounded focus:outline-none focus:shadow-outline"
           href="/funcionario/add"
         >
           Adicionar Funcionário
         </a>
+
+        {loading && (
+          <div className="mt-8 text-center">
+            <ClipLoader />
+          </div>
+        )}
       </div>
-      {funcionarioData.length > 0 && (
+
+      {funcionario.length > 0 && (
         <table className="mx-auto border-collapse border border-slate-500">
           <thead>
             <tr>
@@ -48,8 +46,8 @@ function FuncionarioPage() {
             </tr>
           </thead>
           <tbody>
-            {funcionarioData.map(funcionario => {
-              const { id, nome, matricula, cargo } = funcionario;
+            {funcionario.map(f => {
+              const { id, nome, matricula, cargo } = f;
               return (
                 <tr key={id} className="odd:bg-slate-100 even:bg-slate-50">
                   <td className="border border-slate-200 p-4">{matricula}</td>
@@ -68,8 +66,6 @@ function FuncionarioPage() {
 function FuncionarioAdd() {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
-
   const [formData, setFormData] = useState({
     matricula: '',
     nome: '',
@@ -78,25 +74,14 @@ function FuncionarioAdd() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    setLoading(true);
-    const resp = await apiPostFuncionarioData(formData);
-    if (resp.id) {
-      navigate('/evento');
-    }
+    await apiPostFuncionario(formData).then(resp => {
+      if (resp.id) navigate('/funcionario');
+    });
   };
-
-  if (loading) {
-    return (
-      <div className="mt-8 text-center">
-        <ClipLoader />
-      </div>
-    );
-  }
 
   return (
     <>
-      <h3 className="my-5 text-center">Adicionar Funcionário</h3>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="mt-8">
         <div className="grid gap-6 md:grid-cols-1 mx-auto md:w-1/4">
           <div className="mb-4">
             <label
@@ -168,4 +153,4 @@ function FuncionarioAdd() {
   );
 }
 
-export { FuncionarioPage, FuncionarioAdd };
+export { FuncionarioIndex, FuncionarioAdd };

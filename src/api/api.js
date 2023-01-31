@@ -2,37 +2,35 @@ import axiosModule from 'axios';
 
 const axios = axiosModule.create({ baseURL: 'http://localhost:3001' });
 
-async function apiGetListFuncionarioData() {
-  const { data } = await axios.get(`/funcionarios`, handleResponse);
+/*Funcionario*/
+async function apiListFuncionario() {
+  const { data } = await axios.get(`/funcionario`, handleResponse);
   return data;
 }
 
-async function apiPostFuncionarioData(post) {
-  const { data } = await axios.post(`/funcionarios`, post, handleResponse);
+async function apiPostFuncionario(post) {
+  const { data } = await axios.post(`/funcionario`, post, handleResponse);
   return data;
 }
 
-async function apiGetListEventoData() {
-  const { data } = await axios.get(`/eventos`, handleResponse);
+/*Evento*/
+async function apiListEvento() {
+  const { data } = await axios.get(`/evento`, handleResponse);
   return data;
 }
 
-async function apiPostEventoData(post) {
-  const { data } = await axios.post(`/eventos`, post, handleResponse);
+async function apiPostEvento(post) {
+  const { data } = await axios.post(`/evento`, post, handleResponse);
   return data;
 }
 
-async function apiPostPontoData(post) {
-  const { data } = await axios.post(`/ponto`, post, handleResponse);
-  return data;
-}
-
-async function apiGetListPontoData() {
+/*Ponto*/
+async function apiListPonto() {
   const { data } = await axios.get(`/ponto`, handleResponse);
   return data;
 }
 
-async function apiGetPontoDiaData(get) {
+async function apiGetPontoDia(get) {
   const { data } = await axios.get(
     `/ponto?matricula=${get.matricula}&data=${get.data}`,
     handleResponse
@@ -40,7 +38,12 @@ async function apiGetPontoDiaData(get) {
   return data;
 }
 
-async function apiPutPontoDiaData(id, put) {
+async function apiPostPonto(post) {
+  const { data } = await axios.post(`/ponto`, post, handleResponse);
+  return data;
+}
+
+async function apiPutPontoDia(id, put) {
   const { data } = await axios.put(`/ponto/${id}`, put, handleResponse);
   return data;
 }
@@ -54,12 +57,12 @@ function handleResponse(response) {
 }
 
 export {
-  apiGetListFuncionarioData,
-  apiPostFuncionarioData,
-  apiGetListEventoData,
-  apiPostEventoData,
-  apiGetListPontoData,
-  apiPostPontoData,
-  apiGetPontoDiaData,
-  apiPutPontoDiaData,
+  apiListFuncionario,
+  apiPostFuncionario,
+  apiListEvento,
+  apiPostEvento,
+  apiListPonto,
+  apiGetPontoDia,
+  apiPostPonto,
+  apiPutPontoDia,
 };

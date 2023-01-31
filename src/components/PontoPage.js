@@ -2,14 +2,9 @@ import { useEffect, useState, useMemo } from 'react';
 import { ClipLoader } from 'react-spinners';
 import moment from 'moment';
 
-import {
-  apiGetListPontoData,
-  apiPostPontoData,
-  apiGetPontoDiaData,
-  apiPutPontoDiaData,
-} from '../api/api.js';
+import { apiPostPonto, apiGetPontoDia, apiPutPontoDia } from '../api/api.js';
 
-function ClockNow() {
+function PontoClock() {
   const [data, setData] = useState(new Date());
 
   useEffect(() => {
@@ -33,34 +28,10 @@ function ClockNow() {
   );
 }
 
-function PontoPage() {
-  return (
-    <>
-      <h3>Página de Ponto</h3>
-      <PontoAdd />
-      <PontoList />
-    </>
-  );
-}
-
-function PontoList() {
-  useEffect(() => {
-    const getEventoData = async () => {
-      const data = await apiGetListPontoData();
-      //console.log(data);
-      //setEventoData(data);
-      //setLoading(false);
-    };
-    getEventoData();
-  }, []);
-
-  return <></>;
-}
-
 function PontoAdd() {
   const [loading, setLoading] = useState(false);
 
-  const [formData, setFormData] = useState({
+  const [form, setForm] = useState({
     matricula: null,
     data: null,
     ponto: [],
@@ -81,103 +52,121 @@ function PontoAdd() {
 
   const [txtPonto, setTxtPonto] = useState(statusPonto[0]);
 
-  async function handleClick(e) {
+  const handleSubmit = e => {
     e.preventDefault();
     let now = moment();
     if (now.isValid()) {
-      setFormData(formData => ({
-        ...formData,
-        ponto: [...formData['ponto'], now.format('HH:mm')],
+      setForm(form => ({
+        ...form,
+        ponto: [...form['ponto'], now.format('HH:mm')],
       }));
       setLoading(true);
     }
-  }
+  };
 
   useEffect(() => {
     const setTextStatus = async () => {
-      if (formData.ponto?.length > 0) {
-        await apiPutPontoDiaData(formData.id, formData);
+      if (form.ponto?.length > 0) {
+        await apiPutPontoDia(form.id, form);
         setLoading(false);
       }
     };
     setTextStatus();
-  }, [formData]);
+  }, [form]);
 
   useEffect(() => {
     const setTextStatus = () => {
-      if (formData.ponto?.length > 0) {
-        setTxtPonto(statusPonto[formData.ponto?.length]);
+      if (form.ponto?.length > 0) {
+        setTxtPonto(statusPonto[form.ponto?.length]);
       }
     };
     setTextStatus();
-  }, [formData, statusPonto]);
+  }, [form.ponto, statusPonto]);
 
   useEffect(() => {
-    let fetchData = async () => {
+    let fetchPonto = async () => {
       let dados = {
+        id: null,
         matricula: 12345,
         data: moment().format('YYYY-MM-DD'),
         ponto: [],
       };
 
-      let pontoDia = await apiGetPontoDiaData(dados);
+      let pontoDia = await apiGetPontoDia(dados);
       pontoDia =
-        pontoDia?.length === 0 ? await apiPostPontoData(dados) : pontoDia[0];
+        pontoDia?.length === 0 ? await apiPostPonto(dados) : pontoDia[0];
 
       if (pontoDia?.id) {
-        setFormData({
-          ...formData,
-          id: pontoDia?.id,
-          matricula: pontoDia?.matricula,
-          data: pontoDia?.data,
-        });
-
+        dados.id = pontoDia?.id;
+        dados.matricula = pontoDia?.matricula;
+        dados.data = pontoDia?.data;
         pontoDia?.ponto?.forEach(p => {
-          setFormData(formData => ({
-            ...formData,
-            ponto: [...formData['ponto'], p],
-          }));
+          dados.ponto.push(p);
         });
       }
-    };
-    fetchData();
-  }, []);
 
-  if (loading) {
-    return (
-      <div className="mt-8 text-center">
-        <ClipLoader />
-      </div>
-    );
-  }
+      setForm({
+        ...form,
+        id: dados.id,
+        matricula: dados.matricula,
+        data: dados.data,
+        ponto: dados.ponto,
+      });
+    };
+    fetchPonto();
+  }, []);
 
   return (
     <>
-      <h1 className="text-lg mt-3 text-center">
-        <ClockNow />
+      <h1 className="my-8 text-lg text-center">
+        <PontoClock />
       </h1>
 
-      {formData.ponto?.length <= 5 && (
-        <div className="text-center">
-          <button
-            className="mt-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type=" button"
-            onClick={handleClick}
-          >
-            Bater Ponto {txtPonto}
-          </button>
+      {loading && (
+        <div className="mt-8 text-center">
+          <ClipLoader />
         </div>
       )}
 
-      {formData.ponto?.map((p, i) => {
-        return (
-          <p className="mt-3 text-justify" key={i}>
-            {statusPonto[i]}: {moment(formData.data + ' ' + p).format('HH:mm')}
-          </p>
-        );
-      })}
+      {!loading && form.ponto?.length <= 5 && (
+        <div className="text-center">
+          <form onSubmit={handleSubmit} className="mt-8">
+            <button
+              className=" bg-blue-500 hover:bg-blue-700 text-white font-bold p-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              Bater Ponto {txtPonto}
+            </button>
+          </form>
+        </div>
+      )}
+
+      {!loading && form.ponto?.length > 0 && (
+        <table className="mt-8 mx-auto border-collapse border border-slate-500">
+          <thead>
+            <tr>
+              <th className="border border-slate-200 p-2">Status</th>
+              <th className="border border-slate-200 p-2">Hora</th>
+            </tr>
+          </thead>
+          <tbody>
+            {form.ponto?.map((p, i) => {
+              return (
+                <tr key={i} className="odd:bg-slate-100 even:bg-slate-50">
+                  <td className="border border-slate-200 p-2">
+                    {statusPonto[i]}
+                  </td>
+                  <td className="border border-slate-200 p-2">
+                    {moment(form.data + ' ' + p).format('HH:mm')}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </>
   );
 }
 
-export { PontoPage, PontoAdd };
+export { PontoAdd };

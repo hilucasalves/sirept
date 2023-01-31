@@ -7,9 +7,9 @@ import {
 } from 'react-router-dom';
 
 import Home from './HomePage.js';
-import { FuncionarioPage, FuncionarioAdd } from './FuncionarioPage.js';
-import { EventoPage, EventoAdd } from './EventoPage.js';
-import { PontoPage, PontoAdd } from './PontoPage.js';
+import { FuncionarioIndex, FuncionarioAdd } from './FuncionarioPage.js';
+import { EventoIndex, EventoAdd } from './EventoPage.js';
+import { PontoAdd } from './PontoPage.js';
 
 export default function Menu() {
   return (
@@ -28,7 +28,7 @@ export default function Menu() {
                 <NavLink to="/evento">Evento</NavLink>
               </li>
               <li className="mx-2 cursor-pointer text-blue-500 hover:text-blue-800">
-                <NavLink to="/ponto">Ponto</NavLink>
+                <NavLink to="/ponto/add">Ponto</NavLink>
               </li>
             </ul>
             <Routes>
@@ -40,13 +40,13 @@ export default function Menu() {
               {/* Home */}
               <Route path="/" element={<Home />} />
               {/* Funcionario */}
-              <Route path={`/funcionario`} element={<FuncionarioPage />} />
+              <Route path={`/funcionario`} element={<FuncionarioIndex />} />
               <Route path={`/funcionario/add`} element={<FuncionarioAdd />} />
               {/* Evento */}
-              <Route path={`/evento`} element={<EventoPage />} />
+              <Route path={`/evento`} element={<EventoIndex />} />
               <Route path={`/evento/add`} element={<EventoAdd />} />
               {/* Ponto */}
-              <Route path={`/ponto`} element={<PontoPage />} />
+              {/*<Route path={`/ponto`} element={<PontoPage />} />*/}
               <Route path={`/ponto/add`} element={<PontoAdd />} />
             </Routes>
           </div>
