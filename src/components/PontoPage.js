@@ -81,7 +81,7 @@ function PontoAdd() {
       }
     };
     setTextStatus();
-  }, [form.ponto, statusPonto]);
+  }, [form.ponto?.length, statusPonto]);
 
   useEffect(() => {
     let fetchPonto = async () => {
@@ -145,8 +145,8 @@ function PontoAdd() {
         <table className="mt-8 mx-auto border-collapse border border-slate-500">
           <thead>
             <tr>
-              <th className="border border-slate-200 p-2">Status</th>
-              <th className="border border-slate-200 p-2">Hora</th>
+              <th className="border border-slate-200 p-2">Status do Ponto</th>
+              <th className="border border-slate-200 p-2">Hora da Batida</th>
             </tr>
           </thead>
           <tbody>
