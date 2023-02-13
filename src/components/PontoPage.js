@@ -52,11 +52,11 @@ function PontoAdd() {
 
   const [txtPonto, setTxtPonto] = useState(statusPonto[0]);
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     let now = moment();
     if (now.isValid()) {
-      setForm(form => ({
+      setForm((form) => ({
         ...form,
         ponto: [...form['ponto'], now.format('HH:mm')],
       }));
@@ -100,7 +100,7 @@ function PontoAdd() {
         dados.id = pontoDia?.id;
         dados.matricula = pontoDia?.matricula;
         dados.data = pontoDia?.data;
-        pontoDia?.ponto?.forEach(p => {
+        pontoDia?.ponto?.forEach((p) => {
           dados.ponto.push(p);
         });
       }

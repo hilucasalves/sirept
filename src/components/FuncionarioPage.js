@@ -9,7 +9,7 @@ function FuncionarioIndex() {
   const [loading, setLoading] = useState(true);
 
   const fetchFuncionario = async () => {
-    await apiListFuncionario().then(data => {
+    await apiListFuncionario().then((data) => {
       setFuncionario(data);
       setLoading(false);
     });
@@ -46,7 +46,7 @@ function FuncionarioIndex() {
             </tr>
           </thead>
           <tbody>
-            {funcionario.map(f => {
+            {funcionario.map((f) => {
               const { id, nome, matricula, cargo } = f;
               return (
                 <tr key={id} className="odd:bg-slate-100 even:bg-slate-50">
@@ -72,9 +72,9 @@ function FuncionarioAdd() {
     cargo: '',
   });
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    await apiPostFuncionario(formData).then(resp => {
+    await apiPostFuncionario(formData).then((resp) => {
       if (resp.id) navigate('/funcionario');
     });
   };
@@ -98,7 +98,7 @@ function FuncionarioAdd() {
               placeholder="Matrícula"
               required
               value={formData.matricula}
-              onChange={e =>
+              onChange={(e) =>
                 setFormData({ ...formData, matricula: e.target.value })
               }
             />
@@ -118,7 +118,9 @@ function FuncionarioAdd() {
               placeholder="Nome"
               required
               value={formData.nome}
-              onChange={e => setFormData({ ...formData, nome: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, nome: e.target.value })
+              }
             />
           </div>
           <div className="mb-4">
@@ -136,7 +138,7 @@ function FuncionarioAdd() {
               placeholder="Cargo"
               required
               value={formData.cargo}
-              onChange={e =>
+              onChange={(e) =>
                 setFormData({ ...formData, cargo: e.target.value })
               }
             />

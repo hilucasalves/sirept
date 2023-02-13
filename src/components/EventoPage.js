@@ -9,7 +9,7 @@ function EventoIndex() {
   const [loading, setLoading] = useState(true);
 
   const fetchEvento = async () => {
-    await apiListEvento().then(data => {
+    await apiListEvento().then((data) => {
       setEvento(data);
       setLoading(false);
     });
@@ -45,7 +45,7 @@ function EventoIndex() {
             </tr>
           </thead>
           <tbody>
-            {evento.map(evento => {
+            {evento.map((evento) => {
               const { id, nome, data_inicio, data_fim } = evento;
               const inicio = moment(data_inicio).format('DD/MM/YYYY');
               const fim = moment(data_fim).format('DD/MM/YYYY');
@@ -73,9 +73,9 @@ function EventoAdd() {
     data_fim: '',
   });
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    await apiPostEvento(formData).then(resp => {
+    await apiPostEvento(formData).then((resp) => {
       if (resp.id) navigate('/evento');
     });
   };
@@ -103,7 +103,9 @@ function EventoAdd() {
               placeholder="Evento"
               required
               value={formData.nome}
-              onChange={e => setFormData({ ...formData, nome: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, nome: e.target.value })
+              }
             />
           </div>
           <div className="mb-4">
@@ -121,7 +123,7 @@ function EventoAdd() {
               placeholder="Data Início"
               required
               value={strToDate(formData.data_inicio)}
-              onChange={e =>
+              onChange={(e) =>
                 setFormData({
                   ...formData,
                   data_inicio: e.target.value,
@@ -144,7 +146,7 @@ function EventoAdd() {
               placeholder="Data Fim"
               required
               value={strToDate(formData.data_fim)}
-              onChange={e =>
+              onChange={(e) =>
                 setFormData({
                   ...formData,
                   data_fim: e.target.value,
