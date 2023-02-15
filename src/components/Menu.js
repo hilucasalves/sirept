@@ -10,6 +10,7 @@ import Home from './HomePage.js';
 import { FuncionarioIndex, FuncionarioAdd } from './FuncionarioPage.js';
 import { EventoIndex, EventoAdd } from './EventoPage.js';
 import { PontoAdd } from './PontoPage.js';
+import { ModeracaoIndex } from './ModeracaoPage.js';
 
 export default function Menu() {
   return (
@@ -30,6 +31,9 @@ export default function Menu() {
               <li className="mx-2 cursor-pointer text-blue-500 hover:text-blue-800">
                 <NavLink to="/ponto/add">Ponto</NavLink>
               </li>
+              <li className="mx-2 cursor-pointer text-blue-500 hover:text-blue-800">
+                <NavLink to="/moderacao">Moderação</NavLink>
+              </li>
             </ul>
             <Routes>
               <Route
@@ -48,6 +52,8 @@ export default function Menu() {
               {/* Ponto */}
               {/*<Route path={`/ponto`} element={<PontoPage />} />*/}
               <Route path={`/ponto/add`} element={<PontoAdd />} />
+              {/* Moderação */}
+              <Route path={`/moderacao`} element={<ModeracaoIndex />} />
             </Routes>
           </div>
         </main>

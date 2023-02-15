@@ -4,7 +4,10 @@ const axios = axiosModule.create({ baseURL: 'http://localhost:3001' });
 
 /*Funcionario*/
 async function apiListFuncionario() {
-  const { data } = await axios.get(`/funcionario`, handleResponse);
+  const { data } = await axios.get(
+    `/funcionario?_sort=nome&_order=asc`,
+    handleResponse
+  );
   return data;
 }
 
@@ -48,6 +51,14 @@ async function apiPutPontoDia(id, put) {
   return data;
 }
 
+async function apiGetPontoModeracao(get) {
+  const { data } = await axios.get(
+    `/ponto?matricula=${get.matricula}&data_like=${get.data}&_sort=data&_order=asc`,
+    handleResponse
+  );
+  return data;
+}
+
 function handleResponse(response) {
   if (response.ok) {
     return response.json();
@@ -65,4 +76,5 @@ export {
   apiGetPontoDia,
   apiPostPonto,
   apiPutPontoDia,
+  apiGetPontoModeracao,
 };
