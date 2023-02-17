@@ -2,9 +2,15 @@ import { useEffect, useState, useMemo } from 'react';
 import { ClipLoader } from 'react-spinners';
 import moment from 'moment';
 import 'moment/locale/pt-br';
-import { apiListFuncionario, apiGetPontoModeracao } from '../api/api.js';
+import {
+  apiGetPonto,
+  apiListFuncionario,
+  apiGetPontoModeracao,
+  apiPutPontoDia,
+} from '../api/api.js';
 
 import { GoSearch } from 'react-icons/go';
+import { useParams, Link } from 'react-router-dom';
 
 function ModeracaoIndex() {
   const [mes, setMes] = useState(moment().format('YYYY-MM'));
@@ -38,7 +44,7 @@ function ModeracaoIndex() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (funcionario != 0) {
+    if (funcionario !== 0) {
       setLoading(true);
       await apiGetPontoModeracao({
         matricula: funcionario,
@@ -146,7 +152,11 @@ function ModeracaoIndex() {
               return (
                 <tr key={i} className="odd:bg-slate-100 even:bg-slate-50">
                   <td className="border border-slate-200 p-2">
-                    {moment(f.data).locale('pt-br').format('DD/MM/YYYY (dddd)')}
+                    <Link to={`/moderacao/${f.id}`}>
+                      {moment(f.data)
+                        .locale('pt-br')
+                        .format('DD/MM/YYYY (dddd)')}
+                    </Link>
                   </td>
                   <td className="border border-slate-200 p-2">{f.ponto[0]}</td>
                   <td className="border border-slate-200 p-2">{f.ponto[1]}</td>
@@ -164,4 +174,201 @@ function ModeracaoIndex() {
   );
 }
 
-export { ModeracaoIndex };
+function ModeracaoAdd() {
+  let { id } = useParams();
+
+  const [form, setForm] = useState({
+    matricula: null,
+    data: null,
+    ponto: [],
+    id: null,
+  });
+
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    let fetchPonto = async () => {
+      await apiGetPonto(id).then((data) => {
+        if (data.id) {
+          setForm({
+            ...form,
+            id: data.id,
+            matricula: data.matricula,
+            data: data.data,
+            ponto: data.ponto,
+          });
+        }
+      });
+    };
+    fetchPonto();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    await apiPutPontoDia(form.id, form).then((data) => {
+      if (data.id) {
+        setLoading(false);
+      }
+    });
+  };
+
+  const updatePonto = (index) => (e) => {
+    const newForm = { ...form };
+    const newPonto = [...newForm.ponto];
+    newPonto[index] = e.target.value;
+    newForm.ponto = newPonto;
+    setForm(newForm);
+  };
+
+  return (
+    <>
+      {loading && (
+        <div className="mt-8 text-center">
+          <ClipLoader />
+        </div>
+      )}
+
+      {!loading && form.id && (
+        <form onSubmit={handleSubmit}>
+          <div className="mt-8 grid grid-cols-2 gap-2">
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="e1"
+              >
+                Entrada 1
+              </label>
+              <input
+                type="time"
+                id="e1"
+                name="e1"
+                min="07:00"
+                max="18:00"
+                value={form.ponto[0] || ''}
+                onChange={updatePonto(0)}
+                required
+                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="s1"
+              >
+                Saída 1
+              </label>
+
+              <input
+                type="time"
+                id="s1"
+                name="s1"
+                min="07:00"
+                max="18:00"
+                value={form.ponto[1] || ''}
+                onChange={updatePonto(1)}
+                required
+                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-2">
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="e1"
+              >
+                Entrada 2
+              </label>
+              <input
+                type="time"
+                id="e2"
+                name="e2"
+                min="07:00"
+                max="18:00"
+                value={form.ponto[2] || ''}
+                onChange={updatePonto(2)}
+                required
+                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="s2"
+              >
+                Saída 2
+              </label>
+
+              <input
+                type="time"
+                id="s2"
+                name="s2"
+                min="07:00"
+                max="18:00"
+                value={form.ponto[3] || ''}
+                onChange={updatePonto(3)}
+                required
+                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+          </div>
+
+          <div className="mt-8 grid grid-cols-2 gap-2">
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="e3"
+              >
+                Entrada 3
+              </label>
+              <input
+                type="time"
+                id="e3"
+                name="e3"
+                min="07:00"
+                max="18:00"
+                value={form.ponto[4] || ''}
+                onChange={updatePonto(4)}
+                required
+                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+            <div>
+              <label
+                className="block text-gray-700 text-sm font-bold mb-2"
+                htmlFor="s3"
+              >
+                Saída 3
+              </label>
+
+              <input
+                type="time"
+                id="s3"
+                name="s3"
+                min="07:00"
+                max="18:00"
+                value={form.ponto[5] || ''}
+                onChange={updatePonto(5)}
+                required
+                className="w-full shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+          </div>
+
+          <div className="text-center">
+            <button
+              type="submit"
+              className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold p-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Salvar
+            </button>
+          </div>
+        </form>
+      )}
+    </>
+  );
+}
+
+export { ModeracaoIndex, ModeracaoAdd };

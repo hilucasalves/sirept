@@ -10,7 +10,7 @@ import Home from './HomePage.js';
 import { FuncionarioIndex, FuncionarioAdd } from './FuncionarioPage.js';
 import { EventoIndex, EventoAdd } from './EventoPage.js';
 import { PontoAdd } from './PontoPage.js';
-import { ModeracaoIndex } from './ModeracaoPage.js';
+import { ModeracaoIndex, ModeracaoAdd } from './ModeracaoPage.js';
 
 export default function Menu() {
   return (
@@ -54,6 +54,7 @@ export default function Menu() {
               <Route path={`/ponto/add`} element={<PontoAdd />} />
               {/* Moderação */}
               <Route path={`/moderacao`} element={<ModeracaoIndex />} />
+              <Route path={`/moderacao/:id`} element={<ModeracaoAdd />} />
             </Routes>
           </div>
         </main>

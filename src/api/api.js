@@ -33,6 +33,11 @@ async function apiListPonto() {
   return data;
 }
 
+async function apiGetPonto(id) {
+  const { data } = await axios.get(`/ponto/${id}`, handleResponse);
+  return data;
+}
+
 async function apiGetPontoDia(get) {
   const { data } = await axios.get(
     `/ponto?matricula=${get.matricula}&data=${get.data}`,
@@ -73,6 +78,7 @@ export {
   apiListEvento,
   apiPostEvento,
   apiListPonto,
+  apiGetPonto,
   apiGetPontoDia,
   apiPostPonto,
   apiPutPontoDia,
