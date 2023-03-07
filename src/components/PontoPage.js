@@ -96,7 +96,7 @@ function PontoAdd() {
       pontoDia =
         pontoDia?.length === 0 ? await apiPostPonto(dados) : pontoDia[0];
 
-      if (pontoDia?.id) {
+      if (await pontoDia?.id) {
         dados.id = pontoDia?.id;
         dados.matricula = pontoDia?.matricula;
         dados.data = pontoDia?.data;
