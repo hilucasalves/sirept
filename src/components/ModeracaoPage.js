@@ -8,9 +8,10 @@ import {
   apiGetPontoModeracao,
   apiPutPontoDia,
 } from '../api/api.js';
-
-import { GoSearch } from 'react-icons/go';
+import { GoSearch, GoFilePdf } from 'react-icons/go';
 import { useParams, Link } from 'react-router-dom';
+import { MyDocument } from './PontoDocument.js';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 function ModeracaoIndex() {
   const [mes, setMes] = useState(moment().format('YYYY-MM'));
@@ -49,9 +50,28 @@ function ModeracaoIndex() {
       await apiGetPontoModeracao({
         matricula: funcionario,
         data: mes,
-      }).then((data) => {
-        setData(data);
+      }).then(async (data) => {
         setLoading(false);
+
+        const start = moment(mes).startOf('month');
+        const end = moment(mes).endOf('month');
+        const dados = [];
+
+        while (start.isSameOrBefore(end)) {
+
+          const find = data.find(({ data }) => data === start.format('YYYY-MM-DD'));
+
+          dados.push({
+            id: find?.id,
+            dia: start.format("DD"),
+            data: start.format('DD/MM/YYYY'),
+            ext: start.format("dddd"),
+            ponto: find?.ponto
+          });
+
+          start.add(1, "day");
+        }
+        setData(dados);
       });
     }
   };
@@ -89,12 +109,30 @@ function ModeracaoIndex() {
             })}
           </select>
 
-          <button
-            className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold p-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            <GoSearch />
-          </button>
+          {funcionario > 0 && (
+            <button
+              className="mt-8 bg-blue-500 hover:bg-blue-700 text-white font-bold p-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
+            >
+              <GoSearch />
+            </button>
+          )}
+
+          {!loading && data?.length > 0 && (
+            <div>
+              <PDFDownloadLink document={<MyDocument data={data} />} fileName="somename.pdf">
+                {({ blob, url, loading, error }) => (loading ? '...'
+                  :
+                  <button
+                    className="mt-8 bg-red-500 hover:bg-red-700 text-white font-bold p-4 rounded focus:outline-none focus:shadow-outline"
+                    type="button"
+                  >
+                    <GoFilePdf />
+                  </button>)}
+              </PDFDownloadLink>
+            </div>
+          )}
+
         </form>
       </div>
 
@@ -108,7 +146,7 @@ function ModeracaoIndex() {
         <table className="mt-8 mx-auto border-collapse border border-slate-500">
           <thead>
             <tr>
-              <th className="border border-slate-200 p-2">Data</th>
+              <th className="border border-slate-200 p-2">Dia</th>
               <th
                 className="border border-slate-200 p-2"
                 title={statusPonto[0]}
@@ -152,24 +190,26 @@ function ModeracaoIndex() {
               return (
                 <tr key={i} className="odd:bg-slate-100 even:bg-slate-50">
                   <td className="border border-slate-200 p-2">
-                    <Link to={`/moderacao/${f.id}`}>
-                      {moment(f.data)
-                        .locale('pt-br')
-                        .format('DD/MM/YYYY (dddd)')}
-                    </Link>
+                    {f.id > 0 ?
+                      <Link to={`/moderacao/${f.id}`}>
+                        {f.dia + ', ' + f.ext}
+                      </Link>
+                      : f.dia + ', ' + f.ext
+                    }
                   </td>
-                  <td className="border border-slate-200 p-2">{f.ponto[0]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto[1]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto[2]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto[3]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto[4]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto[5]}</td>
+                  <td className="border border-slate-200 p-2">{f.ponto?.[0]}</td>
+                  <td className="border border-slate-200 p-2">{f.ponto?.[1]}</td>
+                  <td className="border border-slate-200 p-2">{f.ponto?.[2]}</td>
+                  <td className="border border-slate-200 p-2">{f.ponto?.[3]}</td>
+                  <td className="border border-slate-200 p-2">{f.ponto?.[4]}</td>
+                  <td className="border border-slate-200 p-2">{f.ponto?.[5]}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-      )}
+      )
+      }
     </>
   );
 }

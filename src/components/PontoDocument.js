@@ -19,19 +19,19 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     text_center: {
-        fontSize: '12px',
+        fontSize: '11px',
         textAlign: 'center',
         padding: 3
     },
     banner_top: {
         width: '100%',
-        height: '80',
+        height: '60',
         backgroundColor: '#f4f4f4',
     },
     banner_top_text: {
-        fontSize: '14px',
+        fontSize: '11px',
         textAlign: 'center',
-        marginTop: '30'
+        marginTop: '25'
     },
     table_info: {
         width: '100%',
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     },
 
     table_head: {
-        fontSize: '12px',
+        fontSize: '11px',
         textAlign: 'center'
     },
     table_ponto: {
@@ -57,119 +57,109 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-function MyDocument() {
-
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        const start = moment("2023-03-01", 'YYYY-MM-DD');
-        const end = moment("2023-03-31", 'YYYY-MM-DD');
-        const data = [];
-        while (start.isSameOrBefore(end)) {
-            data.push(
-                {
-                    dia: start.format("DD"),
-                    ext: start.format("dddd")
-                }
-            );
-            start.add(1, "day");
-        }
-
-        setData(data);
-
-    }, []);
+function MyDocument({ data }) {
 
     return (
-        <PDFViewer style={styles.viewer}>
-            <Document>
-                <Page style={styles.page}>
+        //<PDFViewer style={styles.viewer}>
+        <Document>
+            <Page style={styles.page}>
 
-                    <View style={styles.banner_top}>
-                        <Text style={styles.banner_top_text}>
-                            Nome da Empresa
+                <View style={styles.banner_top}>
+                    <Text style={styles.banner_top_text}>
+                        Nome da Empresa
+                    </Text>
+                </View>
+
+                <View style={styles.view_100}>
+                    <Text style={styles.text_center}>
+                        Folha de Ponto
+                    </Text>
+                </View>
+
+                <View style={styles.table_info}>
+                    <View style={{ width: '50%' }}>
+                        <Text style={{ fontSize: '11px', textAlign: 'center' }}>
+                            {`  Nome da Empresa
+                                    Endereço da Empresa
+                                    Cidade e Estado
+                                    CNPJ da Empresa `}
+                        </Text>
+                    </View>
+                    <View style={{ width: '50%' }}>
+                        <Text style={{ fontSize: '11px', textAlign: 'center' }}>
+                            {`  Matrícula do Funcionário
+                                    Nome do Funcionário
+                                    Função e Setor
+                                    Projeto `}
+                        </Text>
+                    </View>
+                </View>
+
+                <View style={styles.view_100}>
+                    <Text style={styles.text_center}>
+                        {`  Jornada de Trabalho
+                                Março/2023  `}
+                    </Text>
+
+                    <View style={styles.table_ponto}>
+                        <Text style={{ fontSize: '11px', width: '20%', textAlign: 'center' }}>
+                            Dia e Semana
+                        </Text>
+                        <Text style={{ fontSize: '11px', width: '6%', textAlign: 'center' }}>
+                            Início
+                        </Text>
+                        <Text style={{ fontSize: '11px', width: '12%', textAlign: 'center' }}>
+                            Intervalo
+                        </Text>
+                        <Text style={{ fontSize: '11px', width: '8%', textAlign: 'center' }}>
+                            Término
+                        </Text>
+                        <Text style={{ fontSize: '11px', width: '12%', textAlign: 'center' }}>
+                            Extra
+                        </Text>
+                        <Text style={{ fontSize: '11px', width: '20%', textAlign: 'center' }}>
+                            Observações
                         </Text>
                     </View>
 
-                    <View style={styles.view_100}>
-                        <Text style={styles.text_center}>
-                            Folha de Ponto
-                        </Text>
-                    </View>
+                    {data?.map((d, i) => {
+                        return (
+                            <View key={i} style={styles.table_ponto}>
+                                <Text style={{ fontSize: '11px', width: '5%' }}>
+                                    {d.dia}
+                                </Text>
+                                <Text style={{ fontSize: '11px', width: '15%' }}>
+                                    {d.ext}
+                                </Text>
 
-                    <View style={styles.table_info}>
-                        <Text style={{ width: '50%', fontSize: '12px', textAlign: 'center' }}>
-                            Dados da Empresa
-                        </Text>
-                        <Text style={{ width: '50%', fontSize: '12px', textAlign: 'center' }}>
-                            Dados do Funcionario
-                        </Text>
-                    </View>
+                                <Text style={{ fontSize: '11px', width: '6%' }}>
+                                    {d.ponto?.[0]}
+                                </Text>
+                                <Text style={{ fontSize: '11px', width: '6%' }}>
+                                    {d.ponto?.[1]}
+                                </Text>
+                                <Text style={{ fontSize: '11px', width: '6%' }}>
+                                    {d.ponto?.[2]}
+                                </Text>
+                                <Text style={{ fontSize: '11px', width: '8%', textAlign: 'center' }}>
+                                    {d.ponto?.[3]}
+                                </Text>
+                                <Text style={{ fontSize: '11px', width: '6%' }}>
+                                    {d.ponto?.[4]}
+                                </Text>
+                                <Text style={{ fontSize: '11px', width: '6%' }}>
+                                    {d.ponto?.[5]}
+                                </Text>
+                                <Text style={{ fontSize: '11px', width: '20%' }}>
+                                </Text>
+                            </View>
 
-                    <View style={styles.view_100}>
-                        <Text style={styles.text_center}>
-                            Jornada de Trabalho - Março/2023
-                        </Text>
-
-                        <View style={styles.table_ponto}>
-                            <Text style={{ fontSize: '11px', width: '20%', textAlign: 'center' }}>
-                                Dia e Semana
-                            </Text>
-                            <Text style={{ fontSize: '11px', width: '6%', textAlign: 'center' }}>
-                                Início
-                            </Text>
-                            <Text style={{ fontSize: '11px', width: '12%', textAlign: 'center' }}>
-                                Intervalo
-                            </Text>
-                            <Text style={{ fontSize: '11px', width: '8%', textAlign: 'center' }}>
-                                Término
-                            </Text>
-                            <Text style={{ fontSize: '11px', width: '12%', textAlign: 'center' }}>
-                                Extra
-                            </Text>
-                            <Text style={{ fontSize: '11px', width: '20%', textAlign: 'center' }}>
-                                Observações
-                            </Text>
-                        </View>
-
-                        {data.map((d, i) => {
-                            return (
-                                <View key={i} style={styles.table_ponto}>
-                                    <Text style={{ fontSize: '11px', width: '5%' }}>
-                                        {d.dia}
-                                    </Text>
-                                    <Text style={{ fontSize: '11px', width: '15%' }}>
-                                        {d.ext}
-                                    </Text>
-
-                                    <Text style={{ fontSize: '11px', width: '6%' }}>
-                                        {'08:00'}
-                                    </Text>
-                                    <Text style={{ fontSize: '11px', width: '6%' }}>
-                                        {'12:00'}
-                                    </Text>
-                                    <Text style={{ fontSize: '11px', width: '6%' }}>
-                                        {'13:00'}
-                                    </Text>
-                                    <Text style={{ fontSize: '11px', width: '8%', textAlign: 'center' }}>
-                                        {'17:00'}
-                                    </Text>
-                                    <Text style={{ fontSize: '11px', width: '6%' }}>
-                                        {'17:01'}
-                                    </Text>
-                                    <Text style={{ fontSize: '11px', width: '6%' }}>
-                                        {'19:00'}
-                                    </Text>
-                                    <Text style={{ fontSize: '11px', width: '20%' }}>
-
-                                    </Text>
-                                </View>
-
-                            );
-                        })}
-                    </View>
-                </Page>
-            </Document>
-        </PDFViewer >
+                        );
+                    })}
+                </View>
+            </Page>
+        </Document>
+        //</PDFViewer >
     );
 
 }
