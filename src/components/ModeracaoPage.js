@@ -10,7 +10,7 @@ import {
 } from '../api/api.js';
 import { GoSearch, GoFilePdf } from 'react-icons/go';
 import { useParams, Link } from 'react-router-dom';
-import { MyDocument } from './PontoDocument.js';
+import { PontoDocument } from './PontoDocument.js';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
 function ModeracaoIndex() {
@@ -118,9 +118,9 @@ function ModeracaoIndex() {
             </button>
           )}
 
-          {!loading && data?.length > 0 && (
+          {!loading && data?.length > 0 && funcionario > 0 && (
             <div>
-              <PDFDownloadLink document={<MyDocument data={data} />} fileName="somename.pdf">
+              <PDFDownloadLink document={<PontoDocument data={data} />} fileName="folha-ponto.pdf">
                 {({ blob, url, loading, error }) => (loading ? '...'
                   :
                   <button
@@ -142,7 +142,7 @@ function ModeracaoIndex() {
         </div>
       )}
 
-      {!loading && data?.length > 0 && (
+      {!loading && data?.length > 0 && funcionario > 0 && (
         <table className="mt-8 mx-auto border-collapse border border-slate-500">
           <thead>
             <tr>

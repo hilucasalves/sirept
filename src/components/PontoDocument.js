@@ -1,16 +1,6 @@
-import { useEffect, useState } from 'react';
-import {
-    Document, Page, Text, View, StyleSheet, PDFViewer
-} from '@react-pdf/renderer';
-import moment from 'moment';
+import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 
-// Create styles
 const styles = StyleSheet.create({
-
-    viewer: {
-        width: '100%', //the pdf viewer will take up all of the width and height
-        height: window.innerHeight,
-    },
     page: {
         width: '800',
         height: '600'
@@ -56,11 +46,9 @@ const styles = StyleSheet.create({
     },
 });
 
-// Create Document Component
-function MyDocument({ data }) {
+function PontoDocument({ data }) {
 
     return (
-        //<PDFViewer style={styles.viewer}>
         <Document>
             <Page style={styles.page}>
 
@@ -159,9 +147,8 @@ function MyDocument({ data }) {
                 </View>
             </Page>
         </Document>
-        //</PDFViewer >
     );
 
 }
 
-export { MyDocument };
+export { PontoDocument };

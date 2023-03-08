@@ -11,7 +11,6 @@ import { FuncionarioIndex, FuncionarioAdd } from './FuncionarioPage.js';
 import { EventoIndex, EventoAdd } from './EventoPage.js';
 import { PontoAdd } from './PontoPage.js';
 import { ModeracaoIndex, ModeracaoAdd } from './ModeracaoPage.js';
-import { MyDocument } from './PontoDocument.js';
 
 export default function Menu() {
   return (
@@ -35,9 +34,6 @@ export default function Menu() {
               <li className="mx-2 cursor-pointer text-blue-500 hover:text-blue-800">
                 <NavLink to="/moderacao">Moderação</NavLink>
               </li>
-              <li className="mx-2 cursor-pointer text-blue-500 hover:text-blue-800">
-                <NavLink to="/folha-ponto">Folha de Ponto</NavLink>
-              </li>
             </ul>
             <Routes>
               <Route
@@ -59,8 +55,6 @@ export default function Menu() {
               {/* Moderação */}
               <Route path={`/moderacao`} element={<ModeracaoIndex />} />
               <Route path={`/moderacao/:id`} element={<ModeracaoAdd />} />
-              {/* Folha de Ponto */}
-              <Route path={`/folha-ponto`} element={<MyDocument />} />
             </Routes>
           </div>
         </main>
