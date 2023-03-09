@@ -7,6 +7,7 @@ import {
   apiListFuncionario,
   apiGetPontoModeracao,
   apiPutPontoDia,
+  apiGetEventoMes,
 } from '../api/api.js';
 import { GoSearch, GoFilePdf } from 'react-icons/go';
 import { useParams, Link } from 'react-router-dom';
@@ -18,6 +19,7 @@ function ModeracaoIndex() {
   const [funcionario, setFuncionario] = useState(0);
   const [listFuncionario, setListFuncionario] = useState([]);
   const [data, setData] = useState([]);
+  const [evento, setEvento] = useState([]);
 
   const [loading, setLoading] = useState(false);
 
@@ -40,17 +42,41 @@ function ModeracaoIndex() {
       });
     };
 
+    let fetchEvento = async () => {
+      await apiGetEventoMes({
+        mes: mes
+      }).then((data) => {
+        const dados = [];
+        data.forEach((e) => {
+          const start = moment(e.data_inicio);
+          const end = moment(e.data_fim);
+          while (start.isSameOrBefore(end)) {
+            const pos = dados.map(e => e.data).indexOf(start.format('YYYY-MM-DD'));
+            if (pos === -1) {
+              dados.push({
+                data: start.format('YYYY-MM-DD'),
+                desc: e.nome
+              });
+            }
+            start.add(1, "day");
+          }
+        });
+        setEvento(dados);
+      });
+    }
     fetchFuncionario();
+    fetchEvento();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (funcionario !== 0) {
       setLoading(true);
+
       await apiGetPontoModeracao({
         matricula: funcionario,
         data: mes,
-      }).then(async (data) => {
+      }).then((data) => {
         setLoading(false);
 
         const start = moment(mes).startOf('month');
@@ -59,18 +85,25 @@ function ModeracaoIndex() {
 
         while (start.isSameOrBefore(end)) {
 
-          const find = data.find(({ data }) => data === start.format('YYYY-MM-DD'));
+          let find = null;
+          find = evento.find(({ data }) => data === start.format('YYYY-MM-DD'));
+
+          if (!find) {
+            find = data.find(({ data }) => data === start.format('YYYY-MM-DD'));
+          }
 
           dados.push({
             id: find?.id,
             dia: start.format("DD"),
             data: start.format('DD/MM/YYYY'),
             ext: start.format("dddd"),
-            ponto: find?.ponto
+            ponto: find?.ponto,
+            evento: find?.desc
           });
 
           start.add(1, "day");
         }
+
         setData(dados);
       });
     }
@@ -197,12 +230,21 @@ function ModeracaoIndex() {
                       : f.dia + ', ' + f.ext
                     }
                   </td>
-                  <td className="border border-slate-200 p-2">{f.ponto?.[0]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto?.[1]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto?.[2]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto?.[3]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto?.[4]}</td>
-                  <td className="border border-slate-200 p-2">{f.ponto?.[5]}</td>
+
+                  {f.evento && (
+                    <td className="border border-slate-200 p-2 text-center" colSpan={6}>{f.evento}</td>
+                  )}
+
+                  {f.ponto && (
+                    f.ponto.map((p, i) => {
+                      return (<td key={i} className="border border-slate-200 p-2">{p}</td>);
+                    })
+                  )}
+
+                  {!f.evento && !f.ponto && (
+                    <td className="border border-slate-200 p-2 text-center" colSpan={6}></td>
+                  )}
+
                 </tr>
               );
             })}

@@ -22,6 +22,14 @@ async function apiListEvento() {
   return data;
 }
 
+async function apiGetEventoMes(get) {
+  const { data } = await axios.get(
+    `/evento?data_inicio_like=${get.mes}&_sort=data_inicio&_order=asc`,
+    handleResponse
+  );
+  return data;
+}
+
 async function apiPostEvento(post) {
   const { data } = await axios.post(`/evento`, post, handleResponse);
   return data;
@@ -76,6 +84,7 @@ export {
   apiListFuncionario,
   apiPostFuncionario,
   apiListEvento,
+  apiGetEventoMes,
   apiPostEvento,
   apiListPonto,
   apiGetPonto,

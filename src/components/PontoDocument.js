@@ -119,7 +119,6 @@ function PontoDocument({ data }) {
                                 <Text style={{ fontSize: '11px', width: '15%' }}>
                                     {d.ext}
                                 </Text>
-
                                 <Text style={{ fontSize: '11px', width: '6%' }}>
                                     {d.ponto?.[0]}
                                 </Text>
@@ -138,7 +137,8 @@ function PontoDocument({ data }) {
                                 <Text style={{ fontSize: '11px', width: '6%' }}>
                                     {d.ponto?.[5]}
                                 </Text>
-                                <Text style={{ fontSize: '11px', width: '20%' }}>
+                                <Text style={{ fontSize: '11px', width: '20%', textAlign: 'center' }}>
+                                    {d.evento}
                                 </Text>
                             </View>
 
