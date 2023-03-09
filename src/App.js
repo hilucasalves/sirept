@@ -2,6 +2,7 @@
 //import './App.css';
 
 import Menu from './components/Menu.js';
+import { LoginIndex } from './components/LoginPage.js';
 
 function App() {
   return (
@@ -20,8 +21,7 @@ function App() {
 
       <main>
         <div className="container mx-auto p-4">
-          <Menu />
-          
+          <LoginIndex />
         </div>
       </main>
     </div>

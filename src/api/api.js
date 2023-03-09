@@ -11,6 +11,14 @@ async function apiListFuncionario() {
   return data;
 }
 
+async function apiGetFuncionario(get) {
+  const { data } = await axios.get(
+    `/funcionario?matricula=${get.matricula}`,
+    handleResponse
+  );
+  return data;
+}
+
 async function apiPostFuncionario(post) {
   const { data } = await axios.post(`/funcionario`, post, handleResponse);
   return data;
@@ -82,6 +90,7 @@ function handleResponse(response) {
 
 export {
   apiListFuncionario,
+  apiGetFuncionario,
   apiPostFuncionario,
   apiListEvento,
   apiGetEventoMes,
