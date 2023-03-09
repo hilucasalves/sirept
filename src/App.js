@@ -22,6 +22,7 @@ function App() {
       <main>
         <div className="container mx-auto p-4">
           <LoginIndex />
+          <Menu />
         </div>
       </main>
     </div>

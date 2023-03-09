@@ -27,9 +27,11 @@ export function LoginIndex() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const a = await (apiGetFuncionario(usuario));
-        console.log(usuario);
+        await apiGetFuncionario(usuario).then(resp => {
+            if (resp.matricula) {
+                localStorage.setItem('user', usuario.matricula);
+            }
+        });
     };
 
     return (
