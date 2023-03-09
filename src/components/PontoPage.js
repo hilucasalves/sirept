@@ -69,22 +69,14 @@ function PontoAdd() {
       if (form.ponto?.length > 0) {
         await apiPutPontoDia(form.id, form);
         setLoading(false);
-      }
-    };
-    setTextStatus();
-  }, [form]);
-
-  useEffect(() => {
-    const setTextStatus = () => {
-      if (form.ponto?.length > 0) {
         setTxtPonto(statusPonto[form.ponto?.length]);
       }
     };
     setTextStatus();
-  }, [form.ponto?.length, statusPonto]);
+  }, [form, statusPonto]);
 
   useEffect(() => {
-    let fetchPonto = async () => {
+    const fetchPonto = async () => {
       let dados = {
         id: null,
         matricula: 12345,
@@ -96,7 +88,7 @@ function PontoAdd() {
       pontoDia =
         pontoDia?.length === 0 ? await apiPostPonto(dados) : pontoDia[0];
 
-      if (await pontoDia?.id) {
+      if (pontoDia?.id) {
         dados.id = pontoDia?.id;
         dados.matricula = pontoDia?.matricula;
         dados.data = pontoDia?.data;
@@ -128,7 +120,7 @@ function PontoAdd() {
         </div>
       )}
 
-      {!loading && form.ponto?.length <= 5 && (
+      {!loading && form.ponto.data !== null && form.ponto?.length <= 5 && (
         <div className="text-center">
           <form onSubmit={handleSubmit} className="mt-8">
             <button

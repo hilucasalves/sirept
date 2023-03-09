@@ -17,7 +17,7 @@ function FuncionarioIndex() {
 
   useEffect(() => {
     fetchFuncionario();
-  }, [funcionario]);
+  }, []);
 
   return (
     <>

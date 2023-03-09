@@ -17,7 +17,7 @@ function EventoIndex() {
 
   useEffect(() => {
     fetchEvento();
-  }, [evento]);
+  }, []);
 
   return (
     <>
