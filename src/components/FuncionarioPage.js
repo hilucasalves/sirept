@@ -2,9 +2,12 @@ import { useEffect, useState } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { apiListFuncionario, apiPostFuncionario } from '../api/api.js';
 
+import { verifyLogin } from './LoginPage.js';
+
 import { useNavigate } from 'react-router-dom';
 
 function FuncionarioIndex() {
+
   const [funcionario, setFuncionario] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -16,6 +19,7 @@ function FuncionarioIndex() {
   };
 
   useEffect(() => {
+    verifyLogin();
     fetchFuncionario();
   }, []);
 
@@ -78,6 +82,10 @@ function FuncionarioAdd() {
       if (resp.id) navigate('/funcionario');
     });
   };
+
+  useEffect(() => {
+    verifyLogin();
+  }, []);
 
   return (
     <>

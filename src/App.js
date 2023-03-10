@@ -3,6 +3,7 @@
 
 import Menu from './components/Menu.js';
 import { LoginIndex } from './components/LoginPage.js';
+import Routes from './components/Routes.js';
 
 function App() {
   return (
@@ -18,11 +19,12 @@ function App() {
           <h1 className="text-center font-semibold text-xl">Sirept 1.0</h1>
         </div>
       </header>
-
       <main>
         <div className="container mx-auto p-4">
-          <LoginIndex />
-          <Menu />
+          {localStorage.getItem('user') && (
+            <Menu />
+          )}
+          <Routes />
         </div>
       </main>
     </div>

@@ -4,6 +4,8 @@ import { apiListEvento, apiPostEvento } from '../api/api.js';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
 
+import { verifyLogin } from './LoginPage.js';
+
 function EventoIndex() {
   const [evento, setEvento] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,6 +18,7 @@ function EventoIndex() {
   };
 
   useEffect(() => {
+    verifyLogin();
     fetchEvento();
   }, []);
 
@@ -83,6 +86,10 @@ function EventoAdd() {
   function strToDate(strDate) {
     return moment(strDate).format('YYYY-MM-DD');
   }
+
+  useEffect(() => {
+    verifyLogin();
+  }, []);
 
   return (
     <>

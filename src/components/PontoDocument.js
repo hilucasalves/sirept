@@ -1,4 +1,6 @@
 import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
+import { useEffect } from 'react';
+import { verifyLogin } from './LoginPage.js';
 
 const styles = StyleSheet.create({
     page: {
@@ -47,6 +49,10 @@ const styles = StyleSheet.create({
 });
 
 function PontoDocument({ data }) {
+
+    useEffect(() => {
+        verifyLogin();
+    }, []);
 
     return (
         <Document>

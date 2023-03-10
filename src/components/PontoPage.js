@@ -3,6 +3,7 @@ import { ClipLoader } from 'react-spinners';
 import moment from 'moment';
 
 import { apiPostPonto, apiGetPontoDia, apiPutPontoDia } from '../api/api.js';
+import { verifyLogin } from './LoginPage.js';
 
 function PontoClock() {
   const [data, setData] = useState(new Date());
@@ -29,6 +30,11 @@ function PontoClock() {
 }
 
 function PontoAdd() {
+
+  useEffect(() => {
+    verifyLogin();
+  }, []);
+
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
@@ -77,9 +83,11 @@ function PontoAdd() {
 
   useEffect(() => {
     const fetchPonto = async () => {
+      var user = localStorage.getItem('user');
+      user = JSON.parse(user);
       let dados = {
         id: null,
-        matricula: 12345,
+        matricula: user?.matricula,
         data: moment().format('YYYY-MM-DD'),
         ponto: [],
       };

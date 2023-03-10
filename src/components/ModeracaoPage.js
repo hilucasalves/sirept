@@ -14,6 +14,8 @@ import { useParams, Link } from 'react-router-dom';
 import { PontoDocument } from './PontoDocument.js';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
+import { verifyLogin } from './LoginPage.js';
+
 function ModeracaoIndex() {
   const [mes, setMes] = useState(moment().format('YYYY-MM'));
   const [funcionario, setFuncionario] = useState(0);
@@ -36,6 +38,7 @@ function ModeracaoIndex() {
   );
 
   useEffect(() => {
+    verifyLogin();
     let fetchFuncionario = async () => {
       await apiListFuncionario().then((data) => {
         setListFuncionario(data);
@@ -269,6 +272,7 @@ function ModeracaoAdd() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    verifyLogin();
     let fetchPonto = async () => {
       await apiGetPonto(id).then((data) => {
         if (data.id) {
