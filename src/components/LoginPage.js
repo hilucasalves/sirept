@@ -27,8 +27,6 @@ export function LoginIndex() {
                 if (resp[0]?.matricula) {
                     localStorage.setItem('user', JSON.stringify(usuario));
                     localStorage.setItem('perfil', 2);
-                    //var user = localStorage.getItem('user');
-                    //user = JSON.parse(user);
                     window.location.assign('home');
                 }
             });
@@ -52,7 +50,7 @@ export function LoginIndex() {
                                     >
                                         Matrícula
                                     </label>
-                                    <input type="text" name="email" id="email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="name@company.com" required={true}
+                                    <input type="text" name="matricula" id="matricula" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="12345" required={true}
                                         onChange={(e) =>
                                             setUsuario({ ...usuario, matricula: e.target.value })
                                         } />

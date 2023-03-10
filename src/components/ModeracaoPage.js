@@ -179,7 +179,7 @@ function ModeracaoIndex() {
       )}
 
       {!loading && data?.length > 0 && funcionario > 0 && (
-        <table className="mt-8 mx-auto border-collapse border border-slate-500">
+        <table className="mt-8 mx-auto border-collapse border border-slate-200">
           <thead>
             <tr>
               <th className="border border-slate-200 p-2">Dia</th>
