@@ -2,7 +2,6 @@ import React from "react";
 import {
     Route,
     BrowserRouter,
-    Navigate,
     Routes,
 } from 'react-router-dom';
 
@@ -10,7 +9,7 @@ import Home from './HomePage.js';
 import { FuncionarioIndex, FuncionarioAdd } from './FuncionarioPage.js';
 import { EventoIndex, EventoAdd } from './EventoPage.js';
 import { PontoAdd } from './PontoPage.js';
-import { ModeracaoIndex, ModeracaoAdd } from './ModeracaoPage.js';
+import { ModeracaoIndex } from './ModeracaoPage.js';
 import { LoginIndex, Logout } from './LoginPage.js';
 
 const routes = () => {
